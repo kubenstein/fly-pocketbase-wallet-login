@@ -17,121 +17,235 @@
 	onMount(loadPosts)
 </script>
 
-<section class="posts">
-	<header class="posts__header">
-		<div>
-			<h1>Posts</h1>
-			<p class="muted">Backed by the PocketBase `posts` collection.</p>
-		</div>
-		<button class="btn ghost" onclick={loadPosts}>Refresh</button>
-	</header>
+<section class="panel hero">
+	<div>
+		<p class="eyebrow">Live feed</p>
+		<h2>Signal stream</h2>
+		<p class="muted">Backed by the PocketBase `posts` collection and gated by your wallet.</p>
+	</div>
+	<div class="hero__actions">
+		<button class="btn ghost" on:click={loadPosts}>Refresh feed</button>
+	</div>
+</section>
 
-	{#if posts?.length}
-		<ul class="posts__list">
-			{#each posts as post}
-				<li class="post">
-					<div class="post__heading">
+<div class="grid">
+	<section class="panel posts">
+		<header class="panel__header">
+			<div>
+				<p class="eyebrow">Latest</p>
+				<h3>Recent drops</h3>
+				<p class="muted">Time-ordered snapshots signed by connected wallets.</p>
+			</div>
+		</header>
+
+		{#if posts?.length}
+			<ul class="post-grid">
+				{#each posts as post}
+					<li class="post-card">
+						<div class="post-card__meta">
+							<span class="chip">{new Date(post.created).toLocaleString()}</span>
+							<span class="chip chip--id">User {post.userId}</span>
+						</div>
 						<h3>{post.title || 'Untitled post'}</h3>
-						<small>{new Date(post.created).toLocaleString()}</small>
-					</div>
-					{#if post.content}
-						<p>{post.content}</p>
-					{/if}
-					<small class="muted">Posted by {post.userId}</small>
-				</li>
-			{/each}
-		</ul>
-	{:else if posts}
-		<p>No posts yet.</p>
-	{/if}
-</section>
+						{#if post.content}
+							<p>{post.content}</p>
+						{/if}
+					</li>
+				{/each}
+			</ul>
+		{:else if posts}
+			<p class="muted">No posts yet.</p>
+		{:else}
+			<p class="muted">Loading feed...</p>
+		{/if}
+	</section>
 
-<section class="composer">
-	<h2>Create a post</h2>
-	{#if !$pbConnected}
-		<p class="muted">Connect your wallet and log into PocketBase to share a post.</p>
-	{:else}
-		<PostForm onPosted={loadPosts} />
-	{/if}
-</section>
+	<section class="panel composer">
+		<header class="panel__header">
+			<div>
+				<p class="eyebrow">Create</p>
+				<h3>Drop a new signal</h3>
+				<p class="muted">Post after authenticating via wallet + PocketBase.</p>
+			</div>
+		</header>
+
+		{#if !$pbConnected}
+			<p class="muted">Connect your wallet and log into PocketBase to share a post.</p>
+		{:else}
+			<PostForm onPosted={loadPosts} />
+		{/if}
+	</section>
+</div>
 
 <style>
-	section {
-		max-width: 768px;
-		margin: 0 auto 2rem;
-		padding: 1rem;
-		border: 1px solid #e2e8f0;
-		border-radius: 12px;
-		background: #fff;
-		box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+	.panel {
+		position: relative;
+		border-radius: var(--radius);
+		border: 1px solid var(--border);
+		background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+		padding: 1.2rem 1.35rem;
+		backdrop-filter: var(--glass);
+		box-shadow: var(--shadow);
+		overflow: hidden;
 	}
 
-	h1,
-	h2 {
-		margin: 0 0 0.25rem 0;
+	.panel::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(circle at 20% 20%, rgba(104, 242, 201, 0.08), transparent 28%),
+			radial-gradient(circle at 80% 0%, rgba(125, 211, 252, 0.12), transparent 25%);
+		pointer-events: none;
+		opacity: 0.8;
 	}
 
-	.posts__header {
+	.panel > * {
+		position: relative;
+		z-index: 1;
+	}
+
+	.hero {
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		justify-content: space-between;
 		gap: 1rem;
 		margin-bottom: 1rem;
 	}
 
-	.posts__list {
+	.hero h2 {
+		margin: 0.1rem 0 0.2rem 0;
+		font-size: 1.8rem;
+		letter-spacing: -0.02em;
+	}
+
+	.hero__actions {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.grid {
+		display: grid;
+		grid-template-columns: 1.6fr 1fr;
+		gap: 1rem;
+		align-items: start;
+	}
+
+	.panel__header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1.1rem;
+	}
+
+	.panel__header h3 {
+		margin: 0.15rem 0;
+		font-size: 1.2rem;
+		letter-spacing: -0.01em;
+	}
+
+	.posts .panel__header {
+		margin-bottom: 1.25rem;
+	}
+
+	.post-grid {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 		display: grid;
-		gap: 0.75rem;
+		gap: 0.85rem;
 	}
 
-	.post {
-		padding: 0.75rem;
-		border: 1px solid #e2e8f0;
-		border-radius: 10px;
-		background: #f9fafb;
+	.post-card {
+		padding: 1rem 1.1rem;
+		border-radius: 14px;
+		border: 1px solid var(--border);
+		background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.2));
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+		transition: border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
 	}
 
-	.post__heading {
+	.post-card:hover {
+		border-color: var(--accent);
+		transform: translateY(-2px);
+		box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+	}
+
+	.post-card__meta {
 		display: flex;
-		align-items: baseline;
+		align-items: center;
 		justify-content: space-between;
 		gap: 0.5rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.35rem;
 	}
 
-	.post h3 {
-		margin: 0;
+	.post-card h3 {
+		margin: 0.1rem 0;
 	}
 
-	.post p {
-		margin: 0.35rem 0;
+	.post-card p {
+		margin: 0.35rem 0 0;
+		color: #d8e2ff;
 	}
 
-	:global(.btn) {
-		width: fit-content;
-		padding: 0.55rem 1.1rem;
-		border-radius: 10px;
-		border: 1px solid #111827;
-		background: #111827;
-		color: #fff;
-		cursor: pointer;
-		font-weight: 600;
+	.chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		padding: 0.35rem 0.65rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		background: rgba(255, 255, 255, 0.06);
+		font-size: 0.85rem;
+		color: var(--text);
 	}
 
-	:global(.btn:disabled) {
-		opacity: 0.7;
-		cursor: not-allowed;
+	.chip--id {
+		border-color: rgba(125, 211, 252, 0.35);
+		background: rgba(125, 211, 252, 0.1);
 	}
 
-	:global(.ghost) {
-		background: transparent;
-		color: #111827;
+	.chip.warning {
+		border-color: rgba(255, 178, 71, 0.7);
+		background: rgba(255, 178, 71, 0.12);
+		color: #ffd596;
 	}
 
 	.muted {
-		color: #6b7280;
+		color: var(--muted);
 		margin: 0;
+	}
+
+	.eyebrow {
+		margin: 0;
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--muted);
+	}
+
+	@media (max-width: 960px) {
+		.grid {
+			grid-template-columns: 1fr;
+		}
+
+		.hero {
+			flex-direction: column;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.panel,
+		.hero {
+			padding: 1rem 1.05rem;
+		}
+
+		.panel__header,
+		.hero__actions {
+			flex-direction: column;
+			align-items: flex-start;
+		}
 	}
 </style>
