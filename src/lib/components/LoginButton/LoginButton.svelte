@@ -16,7 +16,7 @@
 </script>
 
 <button onclick={$walletConnected ? disconnectEverything : connectWallet}>
-	{$walletConnected ? 'Disconnect' : 'Connect'}
+	{$walletConnected ? 'Disconnect Wallet' : 'Connect Wallet'}
 	{#if $walletConnected}
 		({$connectedWalletAddress})
 	{/if}
