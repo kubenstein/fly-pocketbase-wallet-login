@@ -1,13 +1,13 @@
 import { Signature, verifyTypedData, type TypedDataField } from 'ethers'
 import { randomUUID } from 'node:crypto';
-import { POCKETBASE_AUTH_PASS, POCKETBASE_AUTH_USER } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
 import PocketBase from 'pocketbase';
 
 
 export const generatePbUserToken = async (address: string) => {
 	const adminClient = new PocketBase(PUBLIC_POCKETBASE_URL);
-	await adminClient.collection("_superusers").authWithPassword(POCKETBASE_AUTH_USER, POCKETBASE_AUTH_PASS);
+	await adminClient.collection("_superusers").authWithPassword(env.POCKETBASE_AUTH_USER, env.POCKETBASE_AUTH_PASS);
 
 	const normalisedAddress = address.toLowerCase().replace(/^0x/, '');
 	const email = `${normalisedAddress}@guest.nonon.house`;

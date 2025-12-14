@@ -1,0 +1,36 @@
+app = 'pocketbase-wallet-login'
+primary_region = 'nrt'
+
+[[vm]]
+  size = 'shared-cpu-1x'
+  memory = "512mb"
+
+[env]
+  NODE_ENV = "production"
+  PUBLIC_POCKETBASE_URL = "https://pocketbase-wallet-login.fly.dev:8002"
+  POCKETBASE_SUPERADMIN_USER = "info@mini-labo.org"
+  POCKETBASE_SUPERADMIN_PASS = "uqZP2ZoHVfoW6nspyR"
+  POCKETBASE_AUTH_USER = "authbot@mini-labo.org"
+  POCKETBASE_AUTH_PASS = "dovE8mo8sGy3DPPZtQ"
+
+[mounts]
+  source = "persistent_volume"
+  destination = "/mnt/persistent_volume"
+
+[http_service]
+  internal_port = 8000
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[services]]
+  internal_port = 8002
+  protocol = 'tcp'
+
+  [[services.ports]]
+    handlers = ['tls', 'http']
+    port = 8002
+
+[build]
+  dockerfile = "fly.Dockerfile"
+  ignorefile = "fly.dockerignore"

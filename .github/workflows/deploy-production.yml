@@ -1,0 +1,22 @@
+name: Deploy to Fly.io (production)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Deploy to fly.io
+        env:
+          FLY_ACCESS_TOKEN: ${{ secrets.FLY_ACCESS_TOKEN }}
+        run: |
+          NO_TTY=1 ./scripts/run-dev-env-docker.sh ./scripts/deploy-to-production.sh

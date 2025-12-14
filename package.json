@@ -1,5 +1,5 @@
 {
-	"name": "pocketbase-siwe",
+	"name": "pocketbase-wallet-login",
 	"version": "1.0.0",
 	"private": true,
 	"engines": {

@@ -1,0 +1,12 @@
+**
+
+!src/
+!static/
+
+!fly.production.toml
+!package.json
+!package-lock.yaml
+!tsconfig.json
+!*config*
+!production-server-bootstrap.sh
+
