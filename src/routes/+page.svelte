@@ -2,7 +2,14 @@
 	import { onMount } from 'svelte'
 	import { pbClient, pbConnected } from '$lib/states/pocketbaseState.svelte'
 	import PostForm from '$lib/components/PostForm/PostForm.svelte'
-	import { type PostRecord } from '$lib/api/posts'
+	type PostRecord = {
+		id: string
+		created: string
+		updated: string
+		userId: string
+		title?: string
+		content?: string
+	}
 
 	let posts: PostRecord[] | null = null
 
