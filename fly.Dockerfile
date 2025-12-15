@@ -4,9 +4,12 @@ FROM node:20-alpine AS webapp-builder
 WORKDIR /usr/app
 COPY . ./
 
-RUN cat fly.production.toml | grep PUBLIC_POCKETBASE_URL >> .env
+RUN cat fly.production.toml | grep PUBLIC_POCKETBASE_URL >> .env \
+ && cat fly.production.toml | grep POCKETBASE_AUTH_USER >> .env \
+ && cat fly.production.toml | grep POCKETBASE_AUTH_PASS >> .env
 
 RUN npm i \
+ && npm run check \
  && npm run build \
  && cp package.json package-lock.json ./build/ \
  && (cd ./build/ ; npm ci --only=production)

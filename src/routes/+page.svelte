@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import { pbClient, pbConnected } from '$lib/states/pocketbaseState.svelte'
+	import { pbClient, pbConnected } from '$lib/states/pocketbaseState'
 	import PostForm from '$lib/components/PostForm/PostForm.svelte'
 	type PostRecord = {
 		id: string
@@ -100,7 +100,8 @@
 		content: '';
 		position: absolute;
 		inset: 0;
-		background: radial-gradient(circle at 20% 20%, rgba(104, 242, 201, 0.08), transparent 28%),
+		background:
+			radial-gradient(circle at 20% 20%, rgba(104, 242, 201, 0.08), transparent 28%),
 			radial-gradient(circle at 80% 0%, rgba(125, 211, 252, 0.12), transparent 25%);
 		pointer-events: none;
 		opacity: 0.8;
@@ -170,7 +171,10 @@
 		border: 1px solid var(--border);
 		background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.2));
 		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-		transition: border-color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+		transition:
+			border-color 150ms ease,
+			transform 150ms ease,
+			box-shadow 150ms ease;
 	}
 
 	.post-card:hover {
@@ -212,12 +216,6 @@
 	.chip--id {
 		border-color: rgba(125, 211, 252, 0.35);
 		background: rgba(125, 211, 252, 0.1);
-	}
-
-	.chip.warning {
-		border-color: rgba(255, 178, 71, 0.7);
-		background: rgba(255, 178, 71, 0.12);
-		color: #ffd596;
 	}
 
 	.muted {

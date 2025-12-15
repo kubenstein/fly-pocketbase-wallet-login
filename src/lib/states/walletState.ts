@@ -11,10 +11,10 @@ export const connectedWallets = writable<WalletState[]>([])
 // INIT ------------------------------------------------- //
 const chains: Chain[] = [
 	{
-		id: '0xA4B1',
+		id: '0x1',
 		token: 'ETH',
-		label: 'Arbitrum One',
-		rpcUrl: 'https://arb1.arbitrum.io/rpc'
+		label: 'Ethereum',
+		rpcUrl: 'https://rpc.ankr.com/eth'
 	}
 ]
 
@@ -46,7 +46,7 @@ onboard.state.select('wallets').subscribe((wallets) => {
 // API -------------------------------------------------- //
 export const connectWallet = async () => {
 	await onboard.connectWallet()
-	await onboard.setChain({ chainId: '0xA4B1' })
+	await onboard.setChain({ chainId: '0x1' })
 }
 
 export const disconnectWallet = () => onboard.disconnectWallet({ label: get(connectedWallets)[0]?.label })

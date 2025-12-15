@@ -5,7 +5,7 @@
 
 <svelte:head>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 	<link
 		rel="stylesheet"
 		href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
@@ -62,11 +62,17 @@
 	:global(body) {
 		margin: 0;
 		min-height: 100vh;
-		background: radial-gradient(circle at 15% 20%, rgba(104, 242, 201, 0.08), transparent 25%),
+		background:
+			radial-gradient(circle at 15% 20%, rgba(104, 242, 201, 0.08), transparent 25%),
 			radial-gradient(circle at 80% 0%, rgba(125, 211, 252, 0.16), transparent 24%),
 			linear-gradient(135deg, #05070f, #080c18 50%, #0b1424);
 		color: var(--text);
-		font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+		font-family:
+			'Space Grotesk',
+			'Inter',
+			system-ui,
+			-apple-system,
+			sans-serif;
 		line-height: 1.6;
 	}
 
@@ -205,7 +211,10 @@
 		font-weight: 600;
 		font-size: 0.95rem;
 		cursor: pointer;
-		transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+		transition:
+			transform 160ms ease,
+			box-shadow 160ms ease,
+			border-color 160ms ease;
 		backdrop-filter: var(--glass);
 	}
 

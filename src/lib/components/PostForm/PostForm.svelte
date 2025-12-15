@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { pbClient, pbConnected } from '$lib/states/pocketbaseState.svelte'
+	import { pbClient, pbConnected } from '$lib/states/pocketbaseState'
 
 	type PostForm = { title: string; content: string }
 
@@ -42,13 +42,7 @@
 			<span>Title</span>
 			<small>Optional headline</small>
 		</div>
-		<input
-			class="control"
-			type="text"
-			placeholder="A quick headline"
-			bind:value={form.title}
-			maxlength="120"
-		/>
+		<input class="control" type="text" placeholder="A quick headline" bind:value={form.title} maxlength="120" />
 	</label>
 
 	<label class="field">
@@ -56,12 +50,7 @@
 			<span>Content</span>
 			<small>What do you want to share?</small>
 		</div>
-		<textarea
-			class="control"
-			placeholder="What would you like to share?"
-			bind:value={form.content}
-			rows="4"
-		></textarea>
+		<textarea class="control" placeholder="What would you like to share?" bind:value={form.content} rows="4"></textarea>
 	</label>
 
 	<div class="form__footer">
@@ -100,7 +89,10 @@
 		color: var(--text);
 		font: inherit;
 		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-		transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+		transition:
+			border-color 140ms ease,
+			box-shadow 140ms ease,
+			background 140ms ease;
 	}
 
 	.control:focus {

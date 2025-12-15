@@ -1,20 +1,24 @@
 <script lang="ts">
-	import { connectWallet, disconnectWallet, walletConnected, connectedWallet, connectedWalletAddress } from '$lib/states/walletState.svelte'
-	import { pbConnected, connectPb, disconnectPb } from '$lib/states/pocketbaseState.svelte'
-	import { fetchPocketbaseToken } from './lib';
+	import {
+		connectWallet,
+		disconnectWallet,
+		walletConnected,
+		connectedWallet,
+		connectedWalletAddress
+	} from '$lib/states/walletState'
+	import { pbConnected, connectPb, disconnectPb } from '$lib/states/pocketbaseState'
+	import { fetchPocketbaseToken } from './lib'
 
-
-	const formatAddress = (address: string | null) =>
-		address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ''
+	const formatAddress = (address: string | null) => (address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '')
 
 	async function authPocketbase() {
-		const token = await fetchPocketbaseToken($connectedWallet);
-		await connectPb({ token });
+		const token = await fetchPocketbaseToken($connectedWallet)
+		await connectPb({ token })
 	}
 
 	async function disconnectEverything() {
-		await disconnectWallet();
-		await disconnectPb();
+		await disconnectWallet()
+		await disconnectPb()
 	}
 </script>
 
