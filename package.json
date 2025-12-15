@@ -12,8 +12,10 @@
 		"check": "prettier --check ./src/ && eslint ./src/ && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
 	},
 	"dependencies": {
+		"buffer": "^6.0.3",
 		"ethers": "^6.13.5",
-		"pocketbase": "^0.26.5"
+		"pocketbase": "^0.26.5",
+		"siwe": "^3.0.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^5.2.12",

@@ -1,25 +1,38 @@
-import { Signature, BrowserProvider, type TypedDataField } from 'ethers'
+import { BrowserProvider } from 'ethers'
 import { type WalletState } from '@web3-onboard/core'
+import { SiweMessage } from 'siwe';
 
 export const fetchPocketbaseToken = async (wallet: WalletState) => {
-	const data = {
-		types: {
-			Login: [
-				{ name: 'signedBy', type: 'address' }
-			]
-		},
-		values: {
-			signedBy: await addressForWallet(wallet)
-		}
-	}
-	const payload = await signContent(wallet, data)
-	const response = await fetch(`/api/pb/token`, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(payload)
-	})
+	const scheme = window.location.protocol.slice(0, -1);
+	const domain = window.location.host;
+	const uri = window.location.origin;
+	const statement = 'Sign in with Ethereum to the app.';
+	const address = await addressForWallet(wallet);
+	const nonce = await(await fetch("/api/pb/nonce", { credentials: 'include' })).text();
 
-	const token = (await response.json()).token as string
+	const message = new SiweMessage({
+		scheme,
+		domain,
+		address,
+		statement,
+		uri,
+		nonce,
+		version: '1',
+		chainId: 1,
+	}).prepareMessage();
+
+	const provider = new BrowserProvider(wallet.provider)
+	const signer = await provider.getSigner()
+	const signature = await signer.signMessage(message);
+
+	const siweVerifyResponse = await fetch("/api/pb/verify", {
+		credentials: 'include',
+		method: "POST",
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ message, signature }),
+	});
+
+	const token = (await siweVerifyResponse.json()).token as string
 	return token
 }
 
@@ -30,22 +43,3 @@ const addressForWallet = async (wallet: WalletState) => {
 	const signer = await provider.getSigner()
 	return signer.address
 }
-
-const signContent = async <T extends Record<string, string | number>>(
-	wallet: WalletState,
-	data: { types: Record<string, TypedDataField[]>; values: T }
-): Promise<{ content: T; signature: { v: number; r: string; s: string } }> => {
-	const provider = new BrowserProvider(wallet.provider)
-	const signer = await provider.getSigner()
-
-	const signature = await signer.signTypedData({}, data.types, data.values)
-	const { v, r, s } = Signature.from(signature)
-	const payload = {
-		types: data.types,
-		content: data.values,
-		signature: { v, r, s }
-	}
-	return payload
-}
-
-

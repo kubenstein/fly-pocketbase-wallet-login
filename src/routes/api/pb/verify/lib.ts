@@ -1,4 +1,3 @@
-import { Signature, verifyTypedData, type TypedDataField } from 'ethers'
 import { randomUUID } from 'node:crypto';
 import { env } from '$env/dynamic/private';
 import { PUBLIC_POCKETBASE_URL } from '$env/static/public';
@@ -33,16 +32,3 @@ export const generatePbUserToken = async (address: string) => {
 
 	return authData.token;
 };
-
-export const verifyPayload =  async (payload: {
-	types: Record<string, TypedDataField[]>
-	content: { signedBy: string }
-	signature: { v: number, r: string, s: string }
-}) => {
-	const { types, content, signature } = payload
-	const { signedBy } = content
-
-	const recoveredAddress = verifyTypedData({}, types, content, Signature.from(signature))
-	const payloadVerified = recoveredAddress.toLowerCase() === signedBy.toLowerCase()
-	return payloadVerified
-}
