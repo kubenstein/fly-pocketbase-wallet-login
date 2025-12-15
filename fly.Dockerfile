@@ -4,9 +4,9 @@ FROM node:20-alpine AS webapp-builder
 WORKDIR /usr/app
 COPY . ./
 
-RUN cat fly.production.toml | grep PUBLIC_POCKETBASE_URL >> .env \
- && cat fly.production.toml | grep POCKETBASE_AUTH_USER >> .env \
- && cat fly.production.toml | grep POCKETBASE_AUTH_PASS >> .env
+RUN cat fly.production.toml | grep PUBLIC_POCKETBASE_URL >> .env
+ENV POCKETBASE_AUTH_USER dummy
+ENV POCKETBASE_AUTH_PASS dummy
 
 RUN npm i \
  && npm run check \

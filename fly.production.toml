@@ -9,9 +9,9 @@ primary_region = 'nrt'
   NODE_ENV = "production"
   PUBLIC_POCKETBASE_URL = "https://pocketbase-wallet-login.fly.dev:8002"
   POCKETBASE_SUPERADMIN_USER = "info@mini-labo.org"
-  POCKETBASE_SUPERADMIN_PASS = "uqZP2ZoHVfoW6nspyR"
+  # POCKETBASE_SUPERADMIN_PASS = "" # taken from fly.io secrets
   POCKETBASE_AUTH_USER = "authbot@mini-labo.org"
-  POCKETBASE_AUTH_PASS = "dovE8mo8sGy3DPPZtQ"
+  # POCKETBASE_AUTH_PASS = "" # taken from fly.io secrets
 
 [mounts]
   source = "persistent_volume"

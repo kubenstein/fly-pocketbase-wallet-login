@@ -1,4 +1,5 @@
 # pocketbase-wallet-login
+
 A demo application implementing Sign-In with Ethereum (SIWE) using a PocketBase backend.
 
 ## Development
@@ -21,8 +22,8 @@ docker run -it --rm -p 8090:8090 \
 	-v "$(pwd)/pb/pb_data:/pb_data" \
 	-v "$(pwd)/pb/pb_hooks:/pb_hooks" \
 	-v "$(pwd)/pb/pb_migrations:/pb_migrations" \
-	-e PB_ADMIN_EMAIL="info@mini-labo.org" \
-	-e PB_ADMIN_PASSWORD="info@mini-labo.org" \
+	-e PB_ADMIN_EMAIL="info@pocketbase.local" \
+	-e PB_ADMIN_PASSWORD="info@pocketbase.local" \
 	nxtgencat/pocketbase --http 0.0.0.0:8090
 ```
 

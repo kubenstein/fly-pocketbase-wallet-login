@@ -3,6 +3,10 @@ import { env as privateEnv } from '$env/dynamic/private'
 import { env as publicEnv } from '$env/dynamic/public'
 import PocketBase from 'pocketbase'
 
+if (!privateEnv.POCKETBASE_AUTH_USER || !privateEnv.POCKETBASE_AUTH_PASS) {
+	throw new Error('PocketBase admin credentials are not set in environment variables')
+}
+
 export const generatePbUserToken = async (address: string) => {
 	const adminClient = new PocketBase(publicEnv.PUBLIC_POCKETBASE_URL)
 	await adminClient
