@@ -225,7 +225,7 @@
 
 	:global(.btn.primary) {
 		background: linear-gradient(135deg, var(--accent), var(--accent-2));
-		color: #071018;
+		color: #fff;
 		border-color: transparent;
 		box-shadow: 0 10px 30px rgba(104, 242, 201, 0.45);
 	}

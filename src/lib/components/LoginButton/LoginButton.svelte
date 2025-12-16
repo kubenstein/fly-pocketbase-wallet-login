@@ -9,16 +9,36 @@
 	import { pbConnected, connectPb, disconnectPb } from '$lib/states/pocketbaseState'
 	import { fetchPocketbaseToken } from './lib'
 
-	const formatAddress = (address: string | null) => (address ? `${address.slice(0, 6)}...${address.slice(-4)}` : '')
+	let status: 'disconnected' | 'connectingWallet' | 'connectingSystem' | 'connected' | 'errored' = 'disconnected'
 
-	async function authPocketbase() {
-		const token = await fetchPocketbaseToken($connectedWallet)
-		await connectPb({ token })
+	// Keep local status in sync with restored sessions from the stores
+	$: {
+		const waitingOnWallet = status === 'connectingWallet'
+
+		if ($walletConnected && $pbConnected) {
+			if (status !== 'connected') status = 'connected'
+		} else if ($walletConnected) {
+			if (status !== 'connectingSystem') status = 'connectingSystem'
+		} else if ($pbConnected) {
+			if (status !== 'connectingWallet') status = 'connectingWallet'
+		} else if (!waitingOnWallet && status !== 'disconnected') {
+			status = 'disconnected'
+		}
 	}
 
-	async function disconnectEverything() {
+	const login = async () => {
+		status = 'connectingWallet'
+		await connectWallet()
+		status = 'connectingSystem'
+		const token = await fetchPocketbaseToken($connectedWallet)
+		await connectPb({ token })
+		status = 'connected'
+	}
+
+	const logout = async () => {
 		await disconnectWallet()
 		await disconnectPb()
+		status = 'disconnected'
 	}
 </script>
 
@@ -29,34 +49,28 @@
 			<div>
 				<p class="pill__label">Wallet</p>
 				<p class="pill__value">
-					{$walletConnected ? formatAddress($connectedWalletAddress) : 'Not connected'}
-				</p>
-			</div>
-		</div>
-		<div class={`status-pill ${$pbConnected ? 'online' : ''}`}>
-			<span class="dot"></span>
-			<div>
-				<p class="pill__label">PocketBase</p>
-				<p class="pill__value">
-					{$pbConnected ? 'Authenticated' : 'Not connected'}
+					{$walletConnected ? $connectedWalletAddress : 'Not connected'}
 				</p>
 			</div>
 		</div>
 	</div>
 
 	<div class="actions">
-		<button class="btn primary" on:click={$walletConnected ? disconnectEverything : connectWallet}>
-			<span>{$walletConnected ? 'Disconnect wallet' : 'Connect wallet'}</span>
-			{#if $walletConnected}
-				<span class="tag">{formatAddress($connectedWalletAddress)}</span>
-			{/if}
+		<button class="btn primary" on:click={$walletConnected ? logout : login}>
+			<span>
+				{#if status === 'connected'}
+					Logout
+				{:else if status === 'connectingWallet'}
+					Connecting wallet...
+				{:else if status === 'connectingSystem'}
+					Connecting to system...
+				{:else if status === 'errored'}
+					Retry login
+				{:else}
+					Login
+				{/if}
+			</span>
 		</button>
-
-		{#if $walletConnected}
-			<button class="btn primary" on:click={$pbConnected ? disconnectPb : authPocketbase}>
-				<span>{$pbConnected ? 'Logout' : 'Login'}</span>
-			</button>
-		{/if}
 	</div>
 </div>
 
