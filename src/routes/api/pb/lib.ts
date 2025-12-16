@@ -7,6 +7,14 @@ if (!privateEnv.POCKETBASE_AUTH_USER || !privateEnv.POCKETBASE_AUTH_PASS) {
 	throw new Error('PocketBase admin credentials are not set in environment variables')
 }
 
+const nonceStorage = new Map<string, string>()
+
+export const nonceStore = {
+	set: (key: string, nonce: string) => nonceStorage.set(key, nonce),
+	get: (key: string) => nonceStorage.get(key),
+	delete: (key: string) => nonceStorage.delete(key)
+}
+
 export const generatePbUserToken = async (address: string) => {
 	const adminClient = new PocketBase(publicEnv.PUBLIC_POCKETBASE_URL)
 	await adminClient
