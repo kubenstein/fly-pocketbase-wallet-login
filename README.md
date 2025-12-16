@@ -24,7 +24,7 @@ docker run -it --rm -p 8090:8090 \
 	-v "$(pwd)/pb/pb_migrations:/pb_migrations" \
 	-e PB_ADMIN_EMAIL="info@pocketbase.local" \
 	-e PB_ADMIN_PASSWORD="info@pocketbase.local" \
-	nxtgencat/pocketbase --http 0.0.0.0:8090
+	ghcr.io/muchobien/pocketbase:latest --dev
 ```
 
 ## Deployments
