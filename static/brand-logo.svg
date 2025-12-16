@@ -1,0 +1,40 @@
+<svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="beam-mint" x1="0" y1="0" x2="55" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#68F2C9" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#7DD3FC" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="beam-ice" x1="0" y1="0" x2="55" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#7DD3FC" stop-opacity="0.45"/>
+    </linearGradient>
+    <radialGradient id="dot" cx="30%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.05"/>
+    </radialGradient>
+    <filter id="glow-mint" x="-24" y="-10" width="104" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#68F2C9" flood-opacity="0.45"/>
+    </filter>
+    <filter id="glow-ice" x="-24" y="2" width="104" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#7DD3FC" flood-opacity="0.35"/>
+    </filter>
+    <clipPath id="clip">
+      <rect width="46" height="46" rx="14" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#clip)">
+    <rect width="46" height="46" rx="14" fill="#294245" />
+    <rect x="0.5" y="0.5" width="45" height="45" rx="13.5" stroke="#FFFFFF" stroke-opacity="0.2" />
+    <rect x="1" y="1" width="44" height="44" rx="13" stroke="#FFFFFF" stroke-opacity="0.04" />
+
+    <g filter="url(#glow-mint)">
+      <rect x="-4" y="10" width="55" height="14" rx="7" fill="url(#beam-mint)" transform="rotate(-18 23 17)"/>
+    </g>
+    <g filter="url(#glow-ice)">
+      <rect x="-4" y="22" width="55" height="14" rx="7" fill="url(#beam-ice)" transform="rotate(14 23 29)"/>
+    </g>
+
+    <rect x="8" y="8" width="30" height="30" rx="10" fill="url(#dot)" />
+  </g>
+</svg>

@@ -19,6 +19,11 @@ const chains: Chain[] = [
 ]
 
 const onboard = Onboard({
+	appMetadata: {
+		name: 'PocketBase Wallet Login',
+		icon: '/brand-logo.svg',
+		description: 'Login to PocketBase using your wallet'
+	},
 	wallets: [injectedModule()],
 	chains,
 	connect: {
@@ -28,13 +33,13 @@ const onboard = Onboard({
 	accountCenter: {
 		desktop: {
 			position: 'bottomRight',
-			enabled: false,
-			minimal: false
+			enabled: true,
+			minimal: true
 		},
 		mobile: {
 			position: 'bottomRight',
-			enabled: false,
-			minimal: false
+			enabled: true,
+			minimal: true
 		}
 	}
 })

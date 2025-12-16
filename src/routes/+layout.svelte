@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LoginButton from '$lib/components/LoginButton/LoginButton.svelte'
+	import WalletSession from '$lib/components/LoginButton/WalletSession.svelte'
 	const { children } = $props()
 </script>
 
@@ -30,7 +30,7 @@
 		</div>
 
 		<div class="nav-actions">
-			<LoginButton />
+			<WalletSession />
 		</div>
 	</header>
 
@@ -84,8 +84,6 @@
 	:global(main) {
 		max-width: 1120px;
 		margin: 0 auto;
-		position: relative;
-		z-index: 1;
 		width: 100%;
 	}
 
@@ -112,7 +110,6 @@
 	}
 
 	.navbar {
-		position: sticky;
 		top: 1.25rem;
 		z-index: 2;
 		display: flex;
@@ -120,7 +117,7 @@
 		justify-content: space-between;
 		gap: 1rem;
 		padding: 1rem 1.25rem;
-		margin: 0 auto 1.75rem;
+		margin: 0 auto 1rem;
 		border: 1px solid var(--border);
 		border-radius: var(--radius);
 		background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
@@ -141,7 +138,7 @@
 		height: 46px;
 		border-radius: 14px;
 		border: 1px solid var(--border-strong);
-		background: linear-gradient(145deg, rgba(104, 242, 201, 0.12), rgba(125, 211, 252, 0.08));
+		background: #294245;
 		overflow: hidden;
 		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
 	}
