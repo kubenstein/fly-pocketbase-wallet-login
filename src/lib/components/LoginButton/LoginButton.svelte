@@ -52,11 +52,11 @@
 
 {#if status === 'disconnected'}
 	<button class="btn primary" on:click={login}>
-		<span>Login</span>
+		<span>Connect to Wallet</span>
 	</button>
 {:else if status === 'walletConnected'}
 	<button class="btn primary" on:click={loginToSystem}>
-		<span>Login to System</span>
+		<span>Login</span>
 	</button>
 {:else if status === 'systemConnected'}
 	<button class="btn primary" on:click={logout}>

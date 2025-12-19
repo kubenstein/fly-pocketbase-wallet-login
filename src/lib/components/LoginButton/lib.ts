@@ -6,7 +6,8 @@ export const fetchPocketbaseToken = async (wallet: WalletState) => {
 	const scheme = window.location.protocol.slice(0, -1)
 	const domain = window.location.host
 	const uri = window.location.origin
-	const statement = 'Sign in with Ethereum to the app.'
+	const statement =
+		'By signing, you are proving you own this wallet and logging in. This does not initiate a transaction or cost any fees.'
 	const address = await addressForWallet(wallet)
 	const nonce = await (await fetch('/api/pb/nonce', { credentials: 'include' })).text()
 
