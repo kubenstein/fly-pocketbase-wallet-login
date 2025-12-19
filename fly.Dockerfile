@@ -14,6 +14,21 @@ RUN npm i \
  && cp package.json package-lock.json ./build/ \
  && (cd ./build/ ; npm ci --only=production)
 
+#
+# Throw-away pocketbase build stage
+FROM node:20-alpine AS pocketbase-builder
+WORKDIR /usr/app
+
+RUN apk add --no-cache unzip
+
+ADD https://github.com/pocketbase/pocketbase/releases/download/v0.31.0/pocketbase_0.31.0_linux_amd64.zip /tmp/pb.zip
+RUN unzip /tmp/pb.zip -d ./build/
+
+COPY . ./
+
+RUN mkdir -p pb/pb_hooks pb/pb_migrations \
+ && cp -R pb/pb_hooks ./build/pb_hooks \
+ && cp -R pb/pb_migrations ./build/pb_migrations
 
 #
 # Actual production image
@@ -23,11 +38,7 @@ ENV NODE_ENV="production"
 
 RUN npm install -g pm2
 
-ADD https://github.com/pocketbase/pocketbase/releases/download/v0.31.0/pocketbase_0.31.0_linux_amd64.zip /tmp/pb.zip
-RUN apk add --no-cache unzip \
-  && unzip /tmp/pb.zip -d /usr/app/ \
-  && rm /tmp/pb.zip
-
 COPY production-server-bootstrap.sh production-server-bootstrap.sh
 COPY --from=webapp-builder /usr/app/build/ ./webapp/
+COPY --from=pocketbase-builder /usr/app/build/ ./pb/
 CMD ["./production-server-bootstrap.sh"]

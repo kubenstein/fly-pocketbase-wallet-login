@@ -2,6 +2,7 @@
 
 !src/
 !static/
+!pb/
 
 !fly.production.toml
 !package.json

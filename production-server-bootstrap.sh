@@ -10,17 +10,22 @@ pm2 start -i 1 \
 
 
 #
-#### Startpocketbase
-/usr/app/pocketbase superuser upsert $POCKETBASE_SUPERADMIN_USER $POCKETBASE_SUPERADMIN_PASS \
-  --dir="/mnt/persistent_volume/pb/pb_data"
+#### Start pocketbase
+echo "Setting up PocketBase superusers..."
+./pb/pocketbase superuser upsert $POCKETBASE_SUPERADMIN_USER $POCKETBASE_SUPERADMIN_PASS --dir="/mnt/persistent_volume/pb/pb_data"
+./pb/pocketbase superuser upsert $POCKETBASE_AUTH_USER $POCKETBASE_AUTH_PASS --dir="/mnt/persistent_volume/pb/pb_data"
+
+echo "Syncing migration files..."
+mkdir -p /mnt/persistent_volume/pb/pb_migrations/
+cp -rf ./pb/pb_migrations/* /mnt/persistent_volume/pb/pb_migrations/
 
 pm2 start -i 1 \
   --no-daemon \
   --name pocketbase \
   --execute-command '
-    /usr/app/pocketbase serve \
+    ./pb/pocketbase serve \
       --http=0.0.0.0:8002 \
       --dir="/mnt/persistent_volume/pb/pb_data" \
       --migrationsDir="/mnt/persistent_volume/pb/pb_migrations" \
-      --hooksDir="/mnt/persistent_volume/pb/pb_hooks"
+      --hooksDir="./pb/pb_hooks"
   '
