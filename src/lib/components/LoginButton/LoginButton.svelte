@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { connectWallet, disconnectWallet, walletConnected, connectedWallet } from '$lib/states/walletState'
 	import { pbConnected, connectPb, disconnectPb } from '$lib/states/pocketbaseState'
-	import { fetchPocketbaseToken } from './lib'
+	import { BrowserProvider } from 'ethers'
+	import { type WalletState } from '@web3-onboard/core'
+	import { SiweMessage } from 'siwe'
 
 	let status: 'disconnected' | 'walletConnected' | 'systemConnected' | 'errored' = 'disconnected'
 
@@ -23,6 +25,7 @@
 		if (!connected) status = 'disconnected'
 	})($walletConnected)
 
+	// actions ------------------------------------------------------------
 	const login = async () => {
 		status = 'disconnected'
 		await connectWallet()
@@ -47,6 +50,35 @@
 		await disconnectPb()
 		await disconnectWallet()
 		status = 'disconnected'
+	}
+
+	// support ------------------------------------------------------------
+	const fetchPocketbaseToken = async (wallet: WalletState) => {
+		const signer = await new BrowserProvider(wallet.provider).getSigner()
+
+		const message = new SiweMessage({
+			version: '1',
+			chainId: 1,
+			scheme: window.location.protocol.slice(0, -1),
+			domain: window.location.host,
+			uri: window.location.origin,
+			address: signer.address,
+			statement:
+				'By signing, you are proving you own this wallet and logging in. This does not initiate a transaction or cost any fees.',
+			nonce: await (await fetch('/api/pb/nonce', { credentials: 'include' })).text()
+		}).prepareMessage()
+
+		const signature = await signer.signMessage(message)
+
+		const siweVerifyResponse = await fetch('/api/pb/verify', {
+			credentials: 'include',
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ message, signature })
+		})
+
+		const token = (await siweVerifyResponse.json()).token as string
+		return token
 	}
 </script>
 
