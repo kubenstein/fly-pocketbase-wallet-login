@@ -8,7 +8,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
-		"build": "rm -rf ./dist && svelte-kit sync && vite build",
+		"build": "rm -rf ./build && svelte-kit sync && vite build",
 		"check": "prettier --check ./src/ && eslint ./src/ && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
 	},
 	"dependencies": {

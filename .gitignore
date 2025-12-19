@@ -3,8 +3,7 @@ node_modules
 
 Thumbs.db
 .DS_Store
-.db
-dist
+build
 .tmp
 pb/pb_data
 .env
